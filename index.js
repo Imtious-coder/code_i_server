@@ -2,11 +2,14 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
+const bodyParser = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://code_1:codei@cluster0.vx9y5.mongodb.net/code_i?retryWrites=true&w=majority";
+const uri = "mongodb+srv://codeiUser:codeiuser@cluster0.vx9y5.mongodb.net/code_i?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 client.connect(err => {
@@ -15,6 +18,7 @@ client.connect(err => {
 
     app.post("/add", (req, res) => {
         const info = req.body;
+        console.log(info);
         collection.insertOne(info)
         .then(result => {
             console.log(result);
@@ -22,8 +26,6 @@ client.connect(err => {
     })
   });
   
-
-
 
 app.get('/', (req, res) => {
     res.send("Server Working Perfectly");
